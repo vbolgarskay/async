@@ -1,6 +1,6 @@
 const API = {
   organizationList: '/orgsList',
-  analytics: '/api3/analytics',
+  analytics: '/api3/analitics',
   orgReqs: '/api3/reqBase',
   buhForms: '/api3/buh',
 };
@@ -24,21 +24,16 @@ const run = async () => {
 run();
 
 const sendRequest = async (url) => {
-  return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', url, true);
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === XMLHttpRequest.DONE) {
-        if (xhr.status === 200) {
-          resolve(JSON.parse(xhr.response));
-        } else {
-          reject(new Error(`Request failed with status ${xhr.status}`));
-        }
+  return fetch(url)
+    .then((response) => {
+      if (response.status !== 200) {
+        throw new Error(`${response.status}`);
       }
-    };
-
-    xhr.send();
-  });
+      return response.json();
+    })
+    .catch((error) => {
+      throw error;
+    });
 };
 
 function reqsToMap(requisites) {
