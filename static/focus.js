@@ -21,20 +21,19 @@ const run = async () => {
   render(orgsMap, orgOgrns);
 };
 
-run();
-
 const sendRequest = async (url) => {
   return fetch(url)
     .then((response) => {
-      if (response.status !== 200) {
+      if (!response.ok) {
         throw new Error(`${response.status}`);
       }
       return response.json();
     })
     .catch((error) => {
-      throw error;
+      alert(error.message);
     });
 };
+run();
 
 function reqsToMap(requisites) {
   return requisites.reduce((acc, item) => {
